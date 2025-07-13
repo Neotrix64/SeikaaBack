@@ -12,7 +12,7 @@ export interface Economia {
 
 export interface Profile {
   id?: number;
-  userDiscordID: number;
+  userDiscordId: number;
   Estado: Estado[];
   exp?: number;
   nivel?: number;

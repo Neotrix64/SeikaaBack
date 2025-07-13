@@ -8,7 +8,7 @@ export class MongoProfileRepository implements ProfileRepository {
     const saved = await created.save();
 
     const plain: Profile = {
-      userDiscordID: saved.userDiscordID,
+      userDiscordId: saved.userDiscordId,
       Estado: saved.Estado,
       exp: saved.exp,
       nivel: saved.nivel,
@@ -24,13 +24,13 @@ export class MongoProfileRepository implements ProfileRepository {
   }
 
   async obtenerPorId(id: number): Promise<Profile | null> {
-    const profile = await ProfileModel.findOne({ userDiscordID: id });
+    const profile = await ProfileModel.findOne({ userDiscordId: id });
     return profile ? profile.toObject() : null;
   }
 
-  async sumarDinero(userDiscordID: number, monto: number): Promise<Profile> {
+  async sumarDinero(userDiscordId: number, monto: number): Promise<Profile> {
     const profile = await ProfileModel.findOneAndUpdate(
-      { userDiscordID },
+      { userDiscordId },
       { $inc: { "economia.0.Efectivo": monto } },
       { new: true }
     );
@@ -38,9 +38,9 @@ export class MongoProfileRepository implements ProfileRepository {
     return profile.toObject();
   }
 
-  async depositarBanco(userDiscordID: number, monto: number): Promise<Profile> {
+  async depositarBanco(userDiscordId: number, monto: number): Promise<Profile> {
     const profile = await ProfileModel.findOneAndUpdate(
-      { userDiscordID },
+      { userDiscordId },
       {
         $inc: {
           "economia.0.Efectivo": -monto,
@@ -51,5 +51,10 @@ export class MongoProfileRepository implements ProfileRepository {
     );
     if (!profile) throw new Error("Perfil no encontrado");
     return profile.toObject();
+  }
+
+  async obtenerPorUserDiscordId(id: number): Promise<Profile | null> {
+    const perfil = await ProfileModel.findOne({userDiscordId: id})
+    return perfil ? perfil : null
   }
 }

@@ -1,4 +1,4 @@
-import { Profile } from "../models/profile";
+import { Profile } from "../models/Profile";
 
 export interface ProfileRepository {
     crear(profile: Profile): Promise<Profile>;
@@ -6,4 +6,5 @@ export interface ProfileRepository {
     obtenerPorId(id: number): Promise<Profile | null>;
     sumarDinero(id: number, monto: number): Promise<Profile>;
     depositarBanco(id: number, monto: number): Promise<Profile>;
+    obtenerPorUserDiscordId(id: number): Promise<Profile | null>;
 }

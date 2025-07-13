@@ -1,9 +1,9 @@
 import mongoose, {Schema, Document} from "mongoose";
 
 export interface ProfileDocument extends Document {
-    userDiscordID: number;
+    userDiscordId: number;
     Estado: {
-        CasadoId?: number,
+        CasadoID?: number,
         createdDate: Date,
     }[];
     exp: number,
@@ -15,7 +15,7 @@ export interface ProfileDocument extends Document {
 }
 
 const ProfileSchema: Schema = new Schema({
-  userDiscordID: { type: Number, required: true },
+  userDiscordId: { type: Number, required: false, unique: true },
   Estado: [
     {
       CasadoID: { type: Number },
