@@ -18,8 +18,8 @@ const ProfileSchema: Schema = new Schema({
   userDiscordId: { type: Number, required: false, unique: true },
   Estado: [
     {
-      CasadoID: { type: Number },
-      createdDate: { type: Date, default: Date.now }
+      CasadoID: { type: Number, required: false, unique: true },
+      createdDate: { type: Date, default: Date.now, required: false }
     }
   ],
   exp: { type: Number, default: 0 },

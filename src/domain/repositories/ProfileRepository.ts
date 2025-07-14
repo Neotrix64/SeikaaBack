@@ -7,4 +7,5 @@ export interface ProfileRepository {
     sumarDinero(id: number, monto: number): Promise<Profile>;
     depositarBanco(id: number, monto: number): Promise<Profile>;
     obtenerPorUserDiscordId(id: number): Promise<Profile | null>;
+    cambiarEstado(id: number, estado: String, idTarget: number): Promise<Profile | null>;
 }

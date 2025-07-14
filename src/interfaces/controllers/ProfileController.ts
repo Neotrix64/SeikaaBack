@@ -28,3 +28,51 @@ export const ProfileController = async (req: Request, res: Response) =>{
         return res.status(500).json({ mensaje: "Error del servidor" });
     }
 }
+
+export const getProfile = async (req: Request, res: Response) =>{
+    try{
+        const idParam  = req.params.id
+        const id = parseInt(idParam);
+
+        if(!id){
+            return res.status(404).json({ mensaje: "No proporcionaste un ID"})
+        }
+
+        const consulta = await CrearPerfilCasoUso.obtenerID(id);
+
+        if(consulta === null){
+            return res.status(404).json({message: "Usuario inexistente"})
+        }
+
+        return res.status(201).json(consulta)
+    } catch (error){
+        console.error("Error al crear obtener perfil:", error);
+        return res.status(500).json({ mensaje: "Error del servidor" });
+    }
+}
+
+export const cambiarEstadoCon = async (req: Request, res: Response) =>{
+    try{
+        const estado = req.params.estado;
+
+        if(!estado){
+            return res.status(404).json({ mensaje: "No proporcionaste un casamiento"})
+        }
+
+        const idParams = req.params.idParams;
+        if(!idParams){
+            return res.status(404).json({ mensaje: "No proporcionaste tu ID"})
+        }
+        const id = parseInt(idParams);
+        const userToMarry = req.params.userToMarry
+        const idTarget = parseInt(userToMarry);
+
+        const resultado = await CrearPerfilCasoUso.cambiarEstado(id, estado, idTarget);
+
+        return res.status(201).json({resultado})
+    
+    } catch(err){
+        console.error("Error al crear obtener perfil:", err);
+        return res.status(500).json({ mensaje: "Error del servidor" });
+    }
+}
