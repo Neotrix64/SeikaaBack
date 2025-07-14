@@ -17,8 +17,15 @@ export interface ProfileDocument extends Document {
 const ProfileSchema: Schema = new Schema({
   userDiscordId: { type: String, required: false, unique: true },
   Estado: [
+
+    //Aplicar el indice en la base de datos despues de crear el esquema para que casadoID sea unico
+//     db.profiles.createIndex(
+//   { "Estado.CasadoID": 1 },
+//   { unique: true, sparse: true }
+// )
+
     {
-      CasadoID: { type: String, required: false, unique: true },
+      CasadoID: { type: String, required: false, },
       createdDate: { type: Date, default: Date.now, required: false }
     }
   ],
