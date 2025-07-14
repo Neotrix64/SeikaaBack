@@ -1,7 +1,7 @@
 // src/domain/models/Profile.ts
 
 export interface Estado {
-  CasadoID?: number;
+  CasadoID?: String;
   createdDate: Date;
 }
 
@@ -12,7 +12,7 @@ export interface Economia {
 
 export interface Profile {
   id?: number;
-  userDiscordId: number;
+  userDiscordId: String;
   Estado: Estado[];
   exp?: number;
   nivel?: number;

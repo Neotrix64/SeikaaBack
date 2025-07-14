@@ -23,15 +23,17 @@ export class MongoProfileRepository implements ProfileRepository {
     return profiles.map((p) => p.toObject());
   }
 
-  async obtenerPorId(id: number): Promise<Profile | null> {
+  async obtenerPorId(id: String): Promise<Profile | null> {
     const profile = await ProfileModel.findOne({ userDiscordId: id });
     return profile ? profile.toObject() : null;
   }
 
 
-async cambiarEstado(id: number, estado: String, idTarget: number): Promise<Profile | null> {
+async cambiarEstado(id: String, estado: String, idTarget: String): Promise<Profile | null> {
     const profile = await ProfileModel.findOne({ userDiscordId: id });
     const targetProfile = await ProfileModel.findOne({ userDiscordId: idTarget });
+
+    console.log("Datos recibidos"+ profile+ targetProfile)
 
     if(!profile){
       return null;
@@ -71,8 +73,8 @@ async cambiarEstado(id: number, estado: String, idTarget: number): Promise<Profi
     if (estado === "unmarry" && (!profile.Estado.length || !targetProfile.Estado.length || profile.Estado[0].CasadoID !== idTarget ||targetProfile.Estado[0].CasadoID !== id)) {
       throw new Error("No puedes divorciarte de este usuario porque no estan casados entre si");
     }
-    profile.save();
-    targetProfile.save()
+    await profile.save();
+    await targetProfile.save()
     return profile.toObject()
   }
 

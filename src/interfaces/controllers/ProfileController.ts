@@ -14,7 +14,8 @@ export const ProfileController = async (req: Request, res: Response) =>{
             return res.status(404).json({ mensaje: "No proporcionaste un ID"})
         }
 
-        const existe = await mongoRepo.obtenerPorUserDiscordId(body.userDiscordId);
+
+        const existe = await mongoRepo.obtenerPorUserDiscordId(parseInt(body.userDiscordId.toString()));
         if (existe) {
         return res.status(409).json({ mensaje: "El perfil ya existe" });
         }
@@ -32,13 +33,14 @@ export const ProfileController = async (req: Request, res: Response) =>{
 export const getProfile = async (req: Request, res: Response) =>{
     try{
         const idParam  = req.params.id
-        const id = parseInt(idParam);
 
-        if(!id){
+        console.log(idParam)
+
+        if(!idParam){
             return res.status(404).json({ mensaje: "No proporcionaste un ID"})
         }
 
-        const consulta = await CrearPerfilCasoUso.obtenerID(id);
+        const consulta = await CrearPerfilCasoUso.obtenerID(idParam);
 
         if(consulta === null){
             return res.status(404).json({message: "Usuario inexistente"})
@@ -51,7 +53,7 @@ export const getProfile = async (req: Request, res: Response) =>{
     }
 }
 
-export const cambiarEstadoCon = async (req: Request, res: Response) =>{
+export const cambiarEstadoCon = async (req: Request, res: Response) => {
     try{
         const estado = req.params.estado;
 
@@ -63,16 +65,29 @@ export const cambiarEstadoCon = async (req: Request, res: Response) =>{
         if(!idParams){
             return res.status(404).json({ mensaje: "No proporcionaste tu ID"})
         }
-        const id = parseInt(idParams);
-        const userToMarry = req.params.userToMarry
-        const idTarget = parseInt(userToMarry);
+        
+        const userToMarry = req.params.userToMarry;
+        if(!userToMarry){
+            return res.status(404).json({ mensaje: "No proporcionaste el ID del usuario objetivo"})
+        }
 
-        const resultado = await CrearPerfilCasoUso.cambiarEstado(id, estado, idTarget);
+        // Agregar logging para ver los parámetros recibidos
+        console.log("Parámetros recibidos:", { estado, idParams, userToMarry });
 
-        return res.status(201).json({resultado})
+        const resultado = await CrearPerfilCasoUso.cambiarEstado(
+            idParams,
+            estado,
+            userToMarry
+        );
+
+        if(!resultado){
+            return res.status(404).json({ mensaje: "No se pudo procesar la operación" });
+        }
+
+        return res.status(201).json({resultado});
     
     } catch(err){
-        console.error("Error al crear obtener perfil:", err);
+        console.error("Error al cambiar estado:", err);
         return res.status(500).json({ mensaje: "Error del servidor" });
     }
 }

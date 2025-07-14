@@ -9,12 +9,12 @@ export class CrearPerfil{
     return nuevoPerfil;
   }
 
-  async obtenerID(id: number): Promise<Profile | null>{
+  async obtenerID(id: String): Promise<Profile | null>{
     const result = await this.profileRepo.obtenerPorId(id)
     return result;
   }
 
-  async cambiarEstado(id: number, estado: String, idTarget: number): Promise<Profile | null>{
+  async cambiarEstado(id: String, estado: String, idTarget: String): Promise<Profile | null>{
     const result = await this.profileRepo.cambiarEstado(id, estado, idTarget);
     return result;
   }
